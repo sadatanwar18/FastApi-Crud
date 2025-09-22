@@ -3,6 +3,9 @@ from models import Product
 from database import session, engine
 import database_model, models
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI()
 
 database_model.Base.metadata.create_all(bind=engine)
@@ -89,4 +92,13 @@ def delete_product(id:int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": f"Product with id {id} has been deleted"}
 
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5500"],
+    allow_credentials= True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
  
